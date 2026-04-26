@@ -14,6 +14,23 @@ export interface TestCase {
   description: string;
 }
 
+export interface ChallengeTestCase {
+  input: string;
+  expected: string;
+  description: string;
+}
+
+export interface ChallengeExercise {
+  description: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  examples: Array<{ input: string; output: string; explanation?: string }>;
+  functionName: string;
+  starterCode: string;
+  solution: string;
+  testCases: ChallengeTestCase[];
+  hints: string[];
+}
+
 export interface QuizQuestion {
   question: string;
   options: string[];
@@ -28,6 +45,7 @@ export interface Lesson {
   xp: number;
   theory?: string;
   codeExercise?: CodeExercise;
+  challenge?: ChallengeExercise;
   quiz?: QuizQuestion[];
 }
 

@@ -1,6 +1,7 @@
 import type { Chapter, Lesson } from '../types';
 import { TheoryView } from './TheoryView';
 import { CodeExerciseView } from './CodeExerciseView';
+import { ChallengeView } from './ChallengeView';
 import { QuizView } from './QuizView';
 
 interface LessonViewProps {
@@ -59,9 +60,17 @@ export function LessonView({
           />
         )}
 
-        {(lesson.type === 'code' || lesson.type === 'challenge') && lesson.codeExercise && (
+        {lesson.type === 'code' && lesson.codeExercise && (
           <CodeExerciseView
             exercise={lesson.codeExercise}
+            onComplete={onComplete}
+            isCompleted={isCompleted}
+          />
+        )}
+
+        {lesson.type === 'challenge' && lesson.challenge && (
+          <ChallengeView
+            challenge={lesson.challenge}
             onComplete={onComplete}
             isCompleted={isCompleted}
           />
