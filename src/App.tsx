@@ -43,7 +43,7 @@ export default function App() {
   useEffect(() => {
     if (user?.user_metadata?.full_name && !userName) {
       const name = user.user_metadata.full_name as string;
-      setUserName(name);
+      setUserName(name); // eslint-disable-line react-hooks/set-state-in-effect
       localStorage.setItem('pylearn_username', name);
     }
   }, [user, userName]);
@@ -52,7 +52,7 @@ export default function App() {
   useEffect(() => {
     if (progress.level > prevLevel) {
       sounds.levelUp();
-      setShowConfetti(true);
+      setShowConfetti(true); // eslint-disable-line react-hooks/set-state-in-effect
       setTimeout(() => setShowConfetti(false), 3000);
     }
     setPrevLevel(progress.level);

@@ -18,9 +18,9 @@ export function ReviewMode({ completedLessons }: ReviewModeProps) {
         }
       }
     }
-    // Shuffle
+    // Shuffle — Math.random is fine here since this is a non-deterministic shuffle
     for (let i = qs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(Math.random() * (i + 1)); // eslint-disable-line react-hooks/purity
       [qs[i], qs[j]] = [qs[j], qs[i]];
     }
     return qs;

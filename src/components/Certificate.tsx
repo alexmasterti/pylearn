@@ -137,7 +137,7 @@ export function Certificate({ userName, courseName, completedLessons, totalLesso
       </div>
 
       {/* Trigger render on mount */}
-      <span className="hidden" ref={() => setTimeout(generateCertificate, 100)} />
+      <span className="hidden" ref={() => { setTimeout(generateCertificate, 100); }} />
     </div>
   );
 }

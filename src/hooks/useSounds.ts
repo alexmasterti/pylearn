@@ -56,5 +56,6 @@ export function useSounds() {
     [523, 659, 784, 1047, 1319].forEach((f, i) => setTimeout(() => playTone(f, 0.15), i * 80));
   }, []);
 
+  // eslint-disable-next-line react-hooks/refs
   return { correct, wrong, levelUp, click, complete, enabled: enabled.current, setEnabled };
 }

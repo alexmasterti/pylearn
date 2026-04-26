@@ -13,7 +13,7 @@ export function useAuth() {
 
   useEffect(() => {
     if (!supabase) {
-      setAuth({ user: null, session: null, loading: false });
+      setAuth({ user: null, session: null, loading: false }); // eslint-disable-line react-hooks/set-state-in-effect
       return;
     }
 

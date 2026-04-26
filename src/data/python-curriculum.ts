@@ -1405,7 +1405,7 @@ total = reduce(lambda a, b: a + b, numbers)
           type: 'code',
           xp: 30,
           codeExercise: {
-            instructions: 'Use map, filter, and sorted with lambda functions:\n1. Double all numbers in the list\n2. Filter only numbers greater than 5\n3. Sort words by their last letter\n\nExpected output:\n```\n[2, 4, 6, 8, 10]\n[6, 7, 8, 9, 10]\n[\"banana\", \"apple\", \"date\", \"cherry\"]\n```',
+            instructions: 'Use map, filter, and sorted with lambda functions:\n1. Double all numbers in the list\n2. Filter only numbers greater than 5\n3. Sort words by their last letter\n\nExpected output:\n```\n[2, 4, 6, 8, 10]\n[6, 7, 8, 9, 10]\n["banana", "apple", "date", "cherry"]\n```',
             starterCode: 'numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\nwords = ["cherry", "banana", "date", "apple"]\n\n# 1. Double all numbers\n\n# 2. Filter > 5\n\n# 3. Sort by last letter\n',
             solution: 'numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\nwords = ["cherry", "banana", "date", "apple"]\nprint(list(map(lambda x: x * 2, numbers[:5])))\nprint(list(filter(lambda x: x > 5, numbers)))\nprint(sorted(words, key=lambda w: w[-1]))',
             tests: [{ expectedOutput: '[2, 4, 6, 8, 10]\n[6, 7, 8, 9, 10]\n[\'banana\', \'apple\', \'date\', \'cherry\']', description: 'Functional operations should match' }],
@@ -2244,7 +2244,7 @@ The next challenge will test everything you've learned. Take your time and use w
           codeExercise: {
             instructions: 'Build a student grade analyzer:\n1. Create a list of student dicts with "name" and "grades" keys\n2. Write a function to calculate each student\'s average\n3. Filter students with average >= 80\n4. Sort them by average (highest first)\n5. Print formatted results\n\nExpected output:\n```\nHonor Roll:\n1. Alice - 92.33\n2. Charlie - 86.00\n```',
             starterCode: 'students = [\n    {"name": "Alice", "grades": [95, 88, 94]},\n    {"name": "Bob", "grades": [70, 65, 72]},\n    {"name": "Charlie", "grades": [85, 90, 83]},\n    {"name": "Diana", "grades": [60, 55, 68]},\n]\n\n# Your code here\n',
-            solution: 'students = [\n    {"name": "Alice", "grades": [95, 88, 94]},\n    {"name": "Bob", "grades": [70, 65, 72]},\n    {"name": "Charlie", "grades": [85, 90, 83]},\n    {"name": "Diana", "grades": [60, 55, 68]},\n]\n\ndef average(grades):\n    return sum(grades) / len(grades)\n\nhonor_roll = sorted(\n    [s for s in students if average(s["grades"]) >= 80],\n    key=lambda s: average(s["grades"]),\n    reverse=True\n)\n\nprint("Honor Roll:")\nfor i, s in enumerate(honor_roll, 1):\n    print(f"{i}. {s[\"name\"]} - {average(s[\"grades\"]):.2f}")',
+            solution: 'students = [\n    {"name": "Alice", "grades": [95, 88, 94]},\n    {"name": "Bob", "grades": [70, 65, 72]},\n    {"name": "Charlie", "grades": [85, 90, 83]},\n    {"name": "Diana", "grades": [60, 55, 68]},\n]\n\ndef average(grades):\n    return sum(grades) / len(grades)\n\nhonor_roll = sorted(\n    [s for s in students if average(s["grades"]) >= 80],\n    key=lambda s: average(s["grades"]),\n    reverse=True\n)\n\nprint("Honor Roll:")\nfor i, s in enumerate(honor_roll, 1):\n    print(f"{i}. {s["name"]} - {average(s["grades"]):.2f}")',
             tests: [{ expectedOutput: 'Honor Roll:\n1. Alice - 92.33\n2. Charlie - 86.00', description: 'Honor roll should be correctly filtered and sorted' }],
           },
         },
