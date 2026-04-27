@@ -15,6 +15,7 @@ interface TestResult {
   expected: string;
   actual: string;
   error?: string;
+  detail?: string;
 }
 
 const difficultyColors = {
@@ -40,9 +41,13 @@ export function ChallengeView({ challenge, onComplete, isCompleted }: ChallengeV
     setResults([]);
     setAllPassed(false);
 
+    // Count user code lines for error mapping
+    const userCodeLines = code.split('\n').length;
+
     // Build test runner code: define the function, then test each case
     const testCode = `
 import json as __json__
+import traceback as __tb__
 
 # --- User code ---
 ${code}
@@ -64,12 +69,15 @@ for __t__ in __tests__:
             "actual": repr(__actual__),
         })
     except Exception as __e__:
+        __err_lines__ = __tb__.format_exception(type(__e__), __e__, __e__.__traceback__)
+        __err_detail__ = "".join(__err_lines__)
         __results__.append({
             "passed": False,
             "description": __t__["description"],
             "expected": __t__["expected"],
             "actual": "",
-            "error": str(__e__),
+            "error": f"{type(__e__).__name__}: {__e__}",
+            "detail": __err_detail__,
         })
 
 print("__CHALLENGE_RESULTS__:" + __json__.dumps(__results__))
@@ -79,7 +87,15 @@ print("__CHALLENGE_RESULTS__:" + __json__.dumps(__results__))
     setRunning(false);
 
     if (result.error) {
-      setError(result.error);
+      // Map line numbers from the wrapper back to user code
+      const mapped = result.error.replace(/line (\d+)/g, (_: string, n: string) => {
+        const origLine = parseInt(n) - 4; // offset for the wrapper preamble
+        if (origLine >= 1 && origLine <= userCodeLines) {
+          return `line ${origLine}`;
+        }
+        return `line ${n}`;
+      });
+      setError(mapped);
       return;
     }
 
@@ -87,7 +103,7 @@ print("__CHALLENGE_RESULTS__:" + __json__.dumps(__results__))
     const marker = '__CHALLENGE_RESULTS__:';
     const idx = result.output.indexOf(marker);
     if (idx === -1) {
-      setError('Could not run tests. Make sure your function is defined correctly.');
+      setError(`Could not run tests. Make sure your function "${challenge.functionName}" is defined correctly.`);
       return;
     }
 
@@ -259,11 +275,25 @@ print("__CHALLENGE_RESULTS__:" + __json__.dumps(__results__))
                     </div>
                     {!r.passed && !r.error && (
                       <div className="text-xs text-slate-500 mt-1 font-mono">
-                        Expected {r.expected}, got {r.actual}
+                        <span className="text-slate-400">Expected:</span> {r.expected}
+                        <br />
+                        <span className="text-slate-400">Got:</span> {r.actual}
                       </div>
                     )}
                     {r.error && (
-                      <div className="text-xs text-red-400/70 mt-1 font-mono">{r.error}</div>
+                      <div className="text-xs mt-1 font-mono">
+                        <div className="text-red-400">{r.error}</div>
+                        {r.detail && (
+                          <details className="mt-1">
+                            <summary className="text-red-400/50 cursor-pointer hover:text-red-400/80 text-[11px]">
+                              Show traceback
+                            </summary>
+                            <pre className="text-red-400/60 mt-1 whitespace-pre-wrap text-[11px] max-h-[120px] overflow-y-auto">
+                              {r.detail}
+                            </pre>
+                          </details>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>
