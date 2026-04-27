@@ -76,6 +76,14 @@ export function LessonView({
           />
         )}
 
+        {lesson.type === 'challenge' && !lesson.challenge && lesson.codeExercise && (
+          <CodeExerciseView
+            exercise={lesson.codeExercise}
+            onComplete={onComplete}
+            isCompleted={isCompleted}
+          />
+        )}
+
         {lesson.type === 'quiz' && lesson.quiz && (
           <QuizView
             questions={lesson.quiz}
